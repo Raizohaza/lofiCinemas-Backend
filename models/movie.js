@@ -11,7 +11,7 @@ const Movie = db.define('Movie', {
         type: DataTypes.DATEONLY,
       },
     Poster:{
-        type: DataTypes.BLOB,
+        type: DataTypes.STRING,
       },
     Duration:{
         type: DataTypes.INTEGER,
@@ -19,8 +19,19 @@ const Movie = db.define('Movie', {
     Decription:{
         type: DataTypes.TEXT,
     },
-    Category:{
+    Genres:{
         type: DataTypes.STRING,
+    },
+    MID:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
+    },
+    Status:{
+      type: DataTypes.STRING,
+    },
+    Trailer:{
+      type: DataTypes.STRING,
     },
   });
 
