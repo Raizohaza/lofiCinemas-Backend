@@ -9,7 +9,7 @@ router.use(function(req,res,next){
 })
 
 router.get('/nowplaying',asyncHandler (async function(req,res){
-    const nowplayings = await Movies.findAll({where:{ Status: 'Released'}});
+    const nowplayings = await Movies.findAll({where:{ Status: 'Now playing'}});
     //const cinemas = await Cinema.findAll();
         res.send({Movies:nowplayings});
 }));

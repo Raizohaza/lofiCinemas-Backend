@@ -18,8 +18,7 @@ function CreateMovie_tmdb(data)
   rObj.Duration = data.runtime;
   rObj.MID = data.id;
   rObj.Trailer = data.videosLink;
-  rObj.Status = data.status;
-  //rObj.Category = data.;
+  rObj.Status = data.status == "Released" ? "Now playing" : "Comming soon";
 
   //update / insert 
   Movies.upsert(rObj);
@@ -40,7 +39,7 @@ async function connectApi(options,callback){
     var subOptions = {
       method: 'GET',
       url: 'https://api.themoviedb.org/3/movie/'+value.id,
-      params: {api_key: apiKey}
+      params: {api_key: apiKey, language: 'vi'}
     };
     let responseSub = await getData(subOptions);   
 
@@ -52,6 +51,7 @@ async function connectApi(options,callback){
     };
     let videosRes = await getData(videosOptions);    
     responseSub.videosLink = 'https://www.youtube.com/watch?v=' + videosRes.results[0].key;
+    
     callback(responseSub);
   });
 
