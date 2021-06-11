@@ -11,7 +11,34 @@ router.use(function(req,res,next){
     res.locals.title = 'Movie';
     next();
 })
+
+router.get('/nowplaying',asyncHandler (async function(req,res){
+    const nowplayings = await Movies.findAll({where:{ Status: 'Now playing'}});
+    //const cinemas = await Cinema.findAll();
+        res.send({Movie:nowplayings});
+}));
+
+router.get('/hot',asyncHandler (async function(req,res){
+            const hots = await Movies.findAll({where:{ Status: 'Released'}});
+            //const cinemas = await Cinema.findAll();
+                res.send({Movie:hots});
+                }));
+
+router.get('/comingsoon',asyncHandler (async function(req,res){
+    const comingsoons = await Movies.findAll({where:{ Status: 'Post Production'}});
+ 
+            //const cinemas = await Cinema.findAll();
+            res.send({Movie:comingsoons});
+            }));
+
 //create
+router.post('/movie/add',asyncHandler(async function(req, res) {
+    //multer.single('poster');
+    const movie = await Movie.create(req.body);
+    res.send(movie);
+}));
+
+//read
 router.post('/movies',asyncHandler (async function(req,res){
     const movies = await Movie.findAll();
     res.send(movies);
@@ -20,24 +47,7 @@ router.post('/movie/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const movies = await Movie.findByPk(id);
     res.send(movies);
-    }));    
-
-router.post('/movie/add',asyncHandler(async function(req, res) {
-
-    //multer.single('poster');
-    const {Name,Duration,Releasedate,Poster,Decription,Status,Trailer,Genres,MID} = req.body;
-    const movie = await Movie.create(req.body);
-    if(movie){
-
-        //movie.Poster = req.file.buffer;
-        await movie.save();
-        res.send('them thanh cong');
-    }else{
-        res.send('error');
-    }
-}));
-
-
+    }));
 
 //update
 const storage = multer.diskStorage({
@@ -51,49 +61,19 @@ const storage = multer.diskStorage({
     }
 });
 
-router.put('/movie/update/:id',asyncHandler(async function(req, res) {
+router.put('/movie/:id/update',asyncHandler(async function(req, res) {
     const id = req.params.id;
-    const {name,duration,releasedate,decription,status,trailer} = req.body;
-    const movie = await Movie.findByPk(id);
-    if(movie){
-        if(name){
-            movie.Name = name;
-        }
-        if(duration){
-            movie.Duration = duration;
-        }
-        if(releasedate){
-            movie.ReleaseDate = releasedate;
-        }
-        if(status){
-            movie.Status = status;
-        }
-        if(req.file){
-            movie.Poster = req.file.buffer;
-            
-        }
-       if(decription){
-           movie.Decription = decription;
-       }
-       if(trailer){
-           movie.Trailer = trailer;
-       }
-        await movie.save();
-        res.send('update thanh cong');
-
-    }else{
-        res.send('error');
-    }
+    const movie = await Movie.update(req.body,{where:{id}});
+    res.send(movie);
 }));
 //delete
 router.delete('/movie/:id/delete',asyncHandler (async function(req,res){
     const id = req.params.id;
-    const movie = await Movie.findByPk(id);
+    const movie = await Movie.destroy({where:{id}});
     if(movie){
-        await movie.destroy();
-        res.send('xoa thanh cong');
+        res.send([1]);
     }else{
-        res.send('error');
+        res.send([0]);
     }
 }));
 
