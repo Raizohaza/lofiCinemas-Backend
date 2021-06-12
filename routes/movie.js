@@ -13,19 +13,19 @@ router.use(function(req,res,next){
 })
 
 router.get('/nowplaying',asyncHandler (async function(req,res){
-    const nowplayings = await Movies.findAll({where:{ Status: 'Now playing'}});
+    const nowplayings = await Movie.findAll({where:{ Status: 'Now playing'}});
     //const cinemas = await Cinema.findAll();
         res.send({Movie:nowplayings});
 }));
 
 router.get('/hot',asyncHandler (async function(req,res){
-            const hots = await Movies.findAll({where:{ Status: 'Released'}});
+            const hots = await Movie.findAll({where:{ Status: 'Released'}});
             //const cinemas = await Cinema.findAll();
                 res.send({Movie:hots});
                 }));
 
 router.get('/comingsoon',asyncHandler (async function(req,res){
-    const comingsoons = await Movies.findAll({where:{ Status: 'Post Production'}});
+    const comingsoons = await Movie.findAll({where:{ Status: 'Post Production'}});
  
             //const cinemas = await Cinema.findAll();
             res.send({Movie:comingsoons});

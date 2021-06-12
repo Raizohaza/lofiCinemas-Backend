@@ -16,7 +16,7 @@ const Movie = db.define('Movie', {
     Duration:{
         type: DataTypes.INTEGER,
     },
-    Decription:{
+    Description:{
         type: DataTypes.TEXT,
     },
     Genres:{

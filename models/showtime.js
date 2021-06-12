@@ -4,23 +4,35 @@ const Cinema = require('./cinema');
 const Movie = require('./movie');
 
 const ShowTime = db.define('ShowTime', {
+    id:{
+      type: DataTypes.INTEGER,
+      primaryKey:true
+    },
     TimeBegin: {
         type: DataTypes.TIME,
-      }, 
-    TimeFinish:{
-        type: DataTypes.TIME,
-      },
-    Price:{
-        type: DataTypes.INTEGER,
-      },
+        primaryKey:true,
+    }, 
     DateShow:{
       type: DataTypes.DATEONLY,
-    }
-    
+      primaryKey:true,
+    },
+    Price:{
+        type: DataTypes.INTEGER,
+    },
+    MovieId:{
+      type: DataTypes.INTEGER,
+      primaryKey:true
+    },
+    CinemaId:{
+      type: DataTypes.INTEGER,
+      primaryKey:true
+    }   
+});
+ShowTime.belongsTo(Movie,{
+  foreignKey: 'MovieId'}
+);
+ShowTime.belongsTo(Cinema,{
+  foreignKey: 'CinemaId'
   });
-
-ShowTime.belongsTo(Movie);
-ShowTime.belongsTo(Cinema);
-
 module.exports = ShowTime;
 

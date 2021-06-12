@@ -15,7 +15,7 @@ const Cinema = db.define('Cinema', {
       type: DataTypes.INTEGER,
   },
   Height:{
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
   },
 });
 
