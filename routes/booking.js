@@ -25,10 +25,6 @@ async function(req,res){
             let ShowTimeId = booking.ShowTimeId;
             let {AvailableSeat,UnAvailableSeat} = await CheckSeat(req.body.Seats,ShowTimeId);
             UnAvailableSeatTemp = UnAvailableSeat;
-            console.log('aa',AvailableSeat);
-            let dt = new Date();
-            dt.setHours(dt.getHours()+7);
-            booking.DateTime = dt;
             for(var element in req.body.Seats) {
                 let Seat = req.body.Seats[element];
                 if(AvailableSeat.includes(Seat)){
@@ -38,7 +34,10 @@ async function(req,res){
                     TotalPrice += ticket.Price;
                 }
             };   
-            booking.TotalPrice = TotalPrice;   
+            let dt = new Date();
+            await dt.setHours(dt.getHours()+7);
+            booking.DateTime = dt;
+            booking.TotalPrice = TotalPrice.toFixed(2);   
             booking.save();
             res.send({booking, UnAvailableSeat});
         });

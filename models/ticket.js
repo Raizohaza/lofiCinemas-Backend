@@ -1,6 +1,7 @@
 const { Sequelize, DataTypes, Model } = require('sequelize');
 const db = require('./db');
 const Booking = require('./booking');
+const ShowTime = require('./showtime');
 
 const Ticket = db.define('Ticket', {
   
@@ -9,7 +10,7 @@ const Ticket = db.define('Ticket', {
       }, 
     
     Price:{
-        type: DataTypes.INTEGER,
+        type: DataTypes.DOUBLE,
       },
     ShowTimeId:{
         type: DataTypes.INTEGER,
@@ -24,10 +25,14 @@ const Ticket = db.define('Ticket', {
     }
   }
   );
-  
+ShowTime.hasMany(Ticket, {
+  onDelete: 'CASCADE ',
+  onUpdate: 'CASCADE '
+});
 
-    // 1 todo chi co 1 user con 1 user co nhiu todo
-Ticket.belongsTo(Booking);
-Booking.hasMany(Ticket);
+Booking.hasMany(Ticket, {
+  onDelete: 'CASCADE ',
+  onUpdate: 'CASCADE '
+});
 
 module.exports = Ticket;

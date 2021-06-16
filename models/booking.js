@@ -14,7 +14,7 @@ const Booking = db.define('Booking', {
         type: DataTypes.DATE,
     },
     TotalPrice: {
-        type: DataTypes.STRING,
+        type: DataTypes.DOUBLE,
     },
   });
 
