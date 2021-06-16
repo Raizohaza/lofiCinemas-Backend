@@ -9,7 +9,9 @@ const cookieSession = require('cookie-session');
 const movieRouter = require('./routes/movie');
 const cinemaRouter = require('./routes/cinema');
 const cineplexRouter = require('./routes/cineplex');
+const bookingRouter = require('./routes/booking');
 const authRouter = require('./routes/auth');
+const ticketRouter = require('./routes/ticket');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const userMiddleware = require('./middlewares/user');
@@ -42,12 +44,13 @@ app.use(expressLayouts);
 app.use('/user',require('./routes/user')); 
 app.use(require('./routes/showtime')); 
 app.use('/profile',authRouter);
+app.use(bookingRouter);
 app.use(cineplexRouter);
 app.use(cinemaRouter);
 app.use(movieRouter);
 // app.use(ShowTimeRouter);
 // app.use(BookingRouter);
-// app.use(TicketRouter);
+ app.use(ticketRouter);
 
 
 

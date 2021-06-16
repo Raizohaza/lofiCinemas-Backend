@@ -8,16 +8,17 @@ const Booking = db.define('Booking', {
     id:{
         type: DataTypes.INTEGER,
         primaryKey:true,
+        autoIncrement:true
     },
     DateTime:{
         type: DataTypes.DATE,
     },
     TotalPrice: {
         type: DataTypes.STRING,
-    }, 
+    },
   });
 
-User.belongsToMany(ShowTime, { through: Booking });
-ShowTime.belongsToMany(User, { through: Booking });
+User.hasMany(Booking);
+ShowTime.hasMany(Booking);
 
 module.exports = Booking;

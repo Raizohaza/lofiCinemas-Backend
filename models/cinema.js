@@ -7,7 +7,6 @@ const Cinema = db.define('Cinema', {
   Name: {
     type: DataTypes.STRING,
   }, 
-
   Type:{
       type: DataTypes.STRING,
     },
@@ -17,6 +16,7 @@ const Cinema = db.define('Cinema', {
   Height:{
       type: DataTypes.INTEGER,
   },
+
 });
 
 Cinema.belongsTo(Cineplex);

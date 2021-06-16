@@ -6,28 +6,42 @@ const Movie = require('./movie');
 const ShowTime = db.define('ShowTime', {
     id:{
       type: DataTypes.INTEGER,
-      primaryKey:true
+      primaryKey:true,
+      autoIncrement:true
     },
     TimeBegin: {
         type: DataTypes.TIME,
-        primaryKey:true,
     }, 
     DateShow:{
       type: DataTypes.DATEONLY,
-      primaryKey:true,
     },
     Price:{
         type: DataTypes.INTEGER,
     },
     MovieId:{
       type: DataTypes.INTEGER,
-      primaryKey:true
     },
     CinemaId:{
       type: DataTypes.INTEGER,
-      primaryKey:true
-    }   
-});
+    },
+       
+},
+// {
+//   indexes: [
+//       {
+//           unique: true,
+//           fields: ['id', 'TimeBegin', 'DateShow','MovieId','CinemaId']
+//       }
+//   ]
+// }
+{
+  uniqueKeys: {
+      Items_unique: {
+        fields: [ 'TimeBegin', 'DateShow','CinemaId']
+      }
+  }
+}
+);
 ShowTime.belongsTo(Movie,{
   foreignKey: 'MovieId'}
 );
