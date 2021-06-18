@@ -21,13 +21,13 @@ router.post('/ticket/:id',asyncHandler (async function(req,res){
     }));
 
 //update
-router.post('/ticket/:id/update',asyncHandler (async function(req,res){
+router.put('/ticket/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const ticket = await Ticket.update(req.body,{where: {id}});
     res.send(ticket);
 }));
 //delete
-router.delete('/ticket/:id/delete',asyncHandler (async function(req,res){
+router.delete('/ticket/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const ticket = await Ticket.destroy({where: {id}});
     if(ticket){        

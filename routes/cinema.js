@@ -29,13 +29,13 @@ router.post('/cinema/:id',asyncHandler (async function(req,res){
     }));
 
 //update
-router.post('/cinema/:id/update',asyncHandler (async function(req,res){
+router.put('/cinema/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const cinema = await Cinema.update(req.body,{where: {id}});
     res.send(cinema);
 }));
 //delete
-router.delete('/cinema/:id/delete',asyncHandler (async function(req,res){
+router.delete('/cinema/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const cinema = await Cinema.destroy({where: {id}});
     if(cinema){        

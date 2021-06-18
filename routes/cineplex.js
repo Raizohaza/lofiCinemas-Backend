@@ -29,14 +29,14 @@ router.post('/cineplex/:id',asyncHandler (async function(req,res){
     }));
 
 //update
-router.post('/cineplex/:id/update',asyncHandler (async function(req,res){
+router.put('/cineplex/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const cineplex = await Cineplex.update(req.body,{where: {id}});
     res.send(cineplex);
 }));
 
 //delete
-router.delete('/cineplex/:id/delete',asyncHandler (async function(req,res){
+router.delete('/cineplex/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const cineplex = await Cineplex.destroy({where:{id:id}});
     if(cineplex){

@@ -44,8 +44,7 @@ async function(req,res){
     } catch (error) {
         //await t.rollback();
         res.send({UnAvailableSeat: UnAvailableSeatTemp});
-    }
-   
+    } 
 }));
 //read
 router.post('/booking',asyncHandler (async function(req,res){
@@ -59,14 +58,14 @@ router.post('/booking/:id',asyncHandler (async function(req,res){
     }));
 
 //update
-router.post('/booking/:id/update',asyncHandler (async function(req,res){
+router.put('/booking/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     let {AvailableSeat,UnAvailableSeat} = await CheckSeat(req.body.Seats,ShowTimeId);
     const booking = await Booking.update(req.body,{where: {id}});
     res.send(booking);
 }));
 //delete
-router.delete('/booking/:id/delete',asyncHandler (async function(req,res){
+router.delete('/booking/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const booking = await Booking.destroy({where: {id}});
     if(booking){        

@@ -15,7 +15,9 @@ const Ticket = db.define('Ticket', {
     ShowTimeId:{
         type: DataTypes.INTEGER,
       },
-
+    CheckIn:{
+        type: DataTypes.BOOLEAN,
+      }
   },
   {
     uniqueKeys: {

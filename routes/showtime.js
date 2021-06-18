@@ -19,7 +19,7 @@ router.post('/showtime/add',asyncHandler (async function(req,res){
     res.send(showtime);
 }));
 
-router.post('/showtime/:id/update',asyncHandler (async function(req,res){
+router.put('/showtime/:id',asyncHandler (async function(req,res){
     const id =req.params.id;
     const showtime =await ShowTime.update(req.body,{where:{id}});
     res.send(showtime);
@@ -51,7 +51,7 @@ router.post('/showtime/:id',asyncHandler (async function(req,res){
     }));
 
 //delete
-router.delete('/showtime/:id/delete',asyncHandler (async function(req,res){
+router.delete('/showtime/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const showtime = await ShowTime.findByPk(id);
     if(showtime){

@@ -1,11 +1,9 @@
 const asyncHandler = require('express-async-handler');
 const express = require('express');
 const router = express.Router();
-const multer = require('multer');
-const upload = multer({ storage:  multer.memoryStorage() });
+const upload = require('../utils/multer');
 const path = require('path');
 const Movie = require('../models/movie');
-router.use(express.static(__dirname+'/public/images'));
 
 router.use(function(req,res,next){
     res.locals.title = 'Movie';
@@ -49,25 +47,35 @@ router.post('/movie/:id',asyncHandler (async function(req,res){
     res.send(movies);
     }));
 
-//update
-const storage = multer.diskStorage({
-    destination: function(req, file, cb) {
-        cb(null, 'public/');
-    },
-    // By default, multer removes file extensions so let's add them back
-    filename: function(req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+router.post('/movie/photo/:id', upload('movies').single('file'), async (req, res, next) => {
+    const movieId = req.params.id;
+    console.log(movieId);
+    const url = `${req.protocol}://${req.get('host')}`;
+    const { file } = req;
+    try {
+        if (!file) {
+        const error = new Error('Please upload a file');
+        error.httpStatusCode = 400;
+        return next(error);
+        }
+        const movie = await Movie.findByPk(movieId);
+        if (!movie) return res.sendStatus(404);
+        movie.Poster = `${url}/${file.path}`;
+        await movie.save();
         
+        res.send({ movie });
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(400).send(e);
     }
-});
-
-router.put('/movie/:id/update',asyncHandler(async function(req, res) {
+    });
+router.put('/movie/:id',asyncHandler(async function(req, res) {
     const id = req.params.id;
     const movie = await Movie.update(req.body,{where:{id}});
     res.send(movie);
 }));
 //delete
-router.delete('/movie/:id/delete',asyncHandler (async function(req,res){
+router.delete('/movie/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const movie = await Movie.destroy({where:{id}});
     if(movie){
