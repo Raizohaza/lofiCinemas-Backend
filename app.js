@@ -4,16 +4,7 @@ var path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
 const cookieSession = require('cookie-session');
-const movieRouter = require('./routes/movie');
-const cinemaRouter = require('./routes/cinema');
-const cineplexRouter = require('./routes/cineplex');
-const bookingRouter = require('./routes/booking');
-const authRouter = require('./routes/auth');
-const ticketRouter = require('./routes/ticket');
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 const userMiddleware = require('./middlewares/user');
 const db = require('./models/db');
 const cors = require('cors');
@@ -37,22 +28,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-
-app.use('/', indexRouter);
-// app.use('/users', usersRouter);
 app.use(expressLayouts);
 app.use('/user',require('./routes/user')); 
 app.use(require('./routes/showtime')); 
-app.use('/profile',authRouter);
-app.use(bookingRouter);
-app.use(cineplexRouter);
-app.use(cinemaRouter);
-app.use(movieRouter);
-// app.use(ShowTimeRouter);
-// app.use(BookingRouter);
- app.use(ticketRouter);
-
-
+app.use(require('./routes/booking'));
+app.use(require('./routes/cineplex'));
+app.use(require('./routes/cinema'));
+app.use(require('./routes/movie'));
+app.use(require('./routes/ticket'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

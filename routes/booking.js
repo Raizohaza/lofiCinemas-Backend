@@ -45,6 +45,7 @@ async function(req,res){
         //await t.rollback();
         res.send({UnAvailableSeat: UnAvailableSeatTemp});
     } 
+    
 }));
 //read
 router.post('/booking',asyncHandler (async function(req,res){
