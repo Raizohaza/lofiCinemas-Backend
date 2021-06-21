@@ -5,6 +5,7 @@ const User = require('../models/user');
 const EmailCtrl = require('../models/email');
 const randomString = require('random-base64-string');
 const brcypt = require('bcrypt');
+const passport = require('passport');
 
 router.use(function(req,res,next){
     res.locals.title = 'Log in';
@@ -147,4 +148,24 @@ router.post('/:id/details',asyncHandler(async function(req, res) {
         res.send('Not found');
     }
 }));
+
+router.get('/auth/loginFacebook', (req,res) =>{
+    res.title - "login fb";
+    res.render('loginfb');
+});
+
+router.get('/auth/facebook', passport.authenticate('facebook',{scope: 'email' }));
+
+router.get('/auth/facebook/callback',
+  passport.authenticate('facebook'),
+  function(req, res) {
+    res.send('login facebook thanh cong');
+  });
+
+router.get('/auth/google', passport.authenticate('google',{scope:[ 'profile','email' ]}));
+router.get('/auth/google/callback',
+  passport.authenticate('google'),
+  function(req, res) {
+    res.send('login google thanh cong');
+  });
 module.exports = router;

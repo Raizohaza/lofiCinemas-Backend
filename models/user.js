@@ -10,7 +10,7 @@ const User = db.define('User', {
     },
     Password: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     Name: {
         type: DataTypes.STRING,
@@ -31,7 +31,14 @@ const User = db.define('User', {
       allowNull:  true,
       defaultValue:false
     },
-    
+    facebookId:{
+      type: DataTypes.STRING,
+      allowNull:  true
+    },
+    googleId:{
+      type: DataTypes.STRING,
+      allowNull:  true
+    },
   });
 
 
@@ -53,9 +60,9 @@ User.findbyEmail = async function(Email){
     });
 }
 
-  User.findbyId = async function(id){
-    return User.findByPk(id);
-   }
+User.findbyId = async function(id){
+  return User.findByPk(id);
+}
 
 
 module.exports = User;

@@ -6,6 +6,7 @@ var sequelize = require('../models/db');
 // const { route } = require('./showtime');
 const Ticket = require('../models/ticket');
 const CheckSeat = require('../utils/CheckSeat');
+const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
 router.post('/booking/add',asyncHandler (
@@ -48,10 +49,10 @@ async function(req,res){
     
 }));
 //read
-router.post('/booking',asyncHandler (async function(req,res){
-    const booking = await Booking.findAll();
-    res.send(booking);
-}));
+// router.post('/booking',asyncHandler (async function(req,res){
+//     const booking = await Booking.findAll();
+//     res.send(booking);
+// }));
 router.post('/booking/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const booking = await Booking.findByPk(id);
@@ -75,5 +76,40 @@ router.delete('/booking/:id',asyncHandler (async function(req,res){
         res.send([0]);
     }
 }));
+//QRcode
+
+router.post('/booking', async (req, res) => {
+    const booking = await Booking.create(req.body);
+  
+    const QRCode = await generateQR(`http://localhost:5000/booking/checkin/${booking.id}`);
+    
+    try {
+      await booking.save();
+      res.status(201).send({ booking, QRCode });
+    } catch (e) {
+      res.status(400).send(e);
+    }
+  });
+  
+router.get('/booking', async (req, res) => {
+    try {
+      const booking = await Booking.findAll();
+      res.send(booking);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+  });
+
+router.get('/booking/checkin/:id', async (req, res) => {
+    const id = req.params.id;
+    try {
+      const booking = await Booking.findByPk(id);
+      ticket.CheckIn = true;
+      await booking.save();
+      return !booking ? res.sendStatus(404) : res.send(booking);
+    } catch (e) {
+      res.status(400).send(e);
+    }
+  });
 
  module.exports = router;
