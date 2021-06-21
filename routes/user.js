@@ -149,6 +149,7 @@ router.post('/:id/details',asyncHandler(async function(req, res) {
     }
 }));
 
+//login facebook
 router.get('/auth/loginFacebook', (req,res) =>{
     res.title - "login fb";
     res.render('loginfb');
@@ -161,7 +162,7 @@ router.get('/auth/facebook/callback',
   function(req, res) {
     res.send('login facebook thanh cong');
   });
-
+//login google
 router.get('/auth/google', passport.authenticate('google',{scope:[ 'profile','email' ]}));
 router.get('/auth/google/callback',
   passport.authenticate('google'),
