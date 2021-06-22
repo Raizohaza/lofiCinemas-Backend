@@ -1,17 +1,9 @@
-var axios = require("axios").default;
-
-var options = {
-  method: 'GET',
-  url: 'https://imdb8.p.rapidapi.com/title/get-videos',
-  params: {tconst: 'tt0455275', limit: '25', region: 'US'},
-  headers: {
-    'x-rapidapi-key': '4e504ba0e1mshe0f60d3c597cc3ap11b3bajsn055ab2ebd17b',
-    'x-rapidapi-host': 'imdb8.p.rapidapi.com'
-  }
+const jwt = require('jsonwebtoken');
+function jwtAuth(id){
+  const token = jwt.sign({ id }, 'mySecret');
+  console.log(token);
+  const decoded = jwt.verify(token, 'mySecret');
+  console.log(decoded);
 };
 
-axios.request(options).then(function (response) {
-	console.log(response.data);
-}).catch(function (error) {
-	console.error(error);
-});
+jwtAuth(23);

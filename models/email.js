@@ -6,13 +6,13 @@ exports.send = async function (to, subject, content) {
     port: 587,
     secure: false,
     auth: {
-      user: 'acqui717@gmail.com',
-      pass: 'lecuong96'
+      user: process.env.GMAIL_USER|| 'acqui717@gmail.com',
+      pass: process.env.GMAIL_PASSWORD||'lecuong96'
     }
   });
 
   const info = await transporter.sendMail({
-    from: 'acqui717@gmail.com',
+    from: process.env.GMAIL_USER|| 'acqui717@gmail.com',
     to: to,
     subject: subject,
     text: content,
