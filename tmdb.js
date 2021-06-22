@@ -14,7 +14,7 @@ function CreateMovie_tmdb(data)
   rObj.Name = data.original_title;
   rObj.Poster = "https://image.tmdb.org/t/p/w185" + data.poster_path;
   rObj.ReleaseDate = data.release_date;
-  rObj.Decription = data.overview;
+  rObj.Description = data.overview;
   rObj.Duration = data.runtime;
   rObj.MID = data.id;
   rObj.Trailer = data.videosLink;
