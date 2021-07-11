@@ -12,7 +12,7 @@ const userMiddleware = require('./middlewares/user');
 const db = require('./models/db');
 const cors = require('cors');
 const User = require('./models/user');
-const config = require('./config/config');
+// const config = require('./config/config');
 var app = express();
 
 app.use(cors());

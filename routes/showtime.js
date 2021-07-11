@@ -19,12 +19,6 @@ router.post('/showtime/add',asyncHandler (async function(req,res){
     res.send(showtime);
 }));
 
-router.put('/showtime/:id',asyncHandler (async function(req,res){
-    const id =req.params.id;
-    const showtime =await ShowTime.update(req.body,{where:{id}});
-    res.send(showtime);
-}));
-
 //read
 router.get('/showtime/:id/Movie',asyncHandler (async function(req,res){
     const MovieId = req.params.id;
@@ -44,11 +38,17 @@ router.get('/showtime/:id/Cineplex',asyncHandler (async function(req,res){
     const showtimes = await ShowTime.findAll({include:[ {model: Cinema},{model: Movie} ],where:{CinemaId:arr}});
     res.send(showtimes);
     }));
-router.post('/showtime/:id',asyncHandler (async function(req,res){
+router.get('/showtime/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const showtime = await ShowTime.findByPk(id);
     res.send(showtime);
     }));
+//update
+router.put('/showtime/:id',asyncHandler (async function(req,res){
+    const id =req.params.id;
+    const showtime =await ShowTime.update(req.body,{where:{id}});
+    res.send(showtime);
+}));
 
 //delete
 router.delete('/showtime/:id',asyncHandler (async function(req,res){

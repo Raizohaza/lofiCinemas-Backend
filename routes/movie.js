@@ -37,11 +37,11 @@ router.post('/movie/add',asyncHandler(async function(req, res) {
 }));
 
 //read
-router.post('/movies',asyncHandler (async function(req,res){
+router.get('/movies',asyncHandler (async function(req,res){
     const movies = await Movie.findAll();
     res.send(movies);
     }));
-router.post('/movie/:id',asyncHandler (async function(req,res){
+router.get('/movie/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const movies = await Movie.findByPk(id);
     res.send(movies);
@@ -69,6 +69,7 @@ router.post('/movie/photo/:id', upload('movies').single('file'), async (req, res
         res.sendStatus(400).send(e);
     }
     });
+//update
 router.put('/movie/:id',asyncHandler(async function(req, res) {
     const id = req.params.id;
     const movie = await Movie.update(req.body,{where:{id}});

@@ -12,11 +12,11 @@ router.post('/ticket/add',asyncHandler (async function(req,res){
 }));
 
 //read
-router.post('/ticket',asyncHandler (async function(req,res){
+router.get('/ticket',asyncHandler (async function(req,res){
     const ticket = await Ticket.findAll();
     res.send(ticket);
 }));
-router.post('/ticket/:id',asyncHandler (async function(req,res){
+router.get('/ticket/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const ticket = await Ticket.findByPk(id);
     res.send(ticket);

@@ -53,7 +53,7 @@ async function(req,res){
 //     const booking = await Booking.findAll();
 //     res.send(booking);
 // }));
-router.post('/booking/:id',asyncHandler (async function(req,res){
+router.get('/booking/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const booking = await Booking.findByPk(id);
     res.send(booking);

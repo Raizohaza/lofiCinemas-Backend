@@ -18,11 +18,11 @@ router.post('/Cineplex/add',asyncHandler (async function(req,res){
 }));
 
 //read
-router.post('/cineplexes',asyncHandler (async function(req,res){
+router.get('/cineplexes',asyncHandler (async function(req,res){
     const cineplexes = await Cineplex.findAll();
     res.send(cineplexes);
 }));
-router.post('/cineplex/:id',asyncHandler (async function(req,res){
+router.get('/cineplex/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const cineplexes = await Cineplex.findByPk(id);
     res.send(cineplexes);
