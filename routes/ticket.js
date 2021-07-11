@@ -2,7 +2,7 @@ const asyncHandler = require('express-async-handler');
 const express = require('express');
 const router = express.Router();
 const Ticket = require('../models/ticket');
-const generateQR = require('../utils/GenerateQR');
+//const generateQR = require('../utils/generateQR');
 const auth = require('../middlewares/auth');
 
 //create
@@ -42,11 +42,11 @@ router.delete('/ticket/:id',asyncHandler (async function(req,res){
 router.post('/ticket', async (req, res) => {
     const ticket = await Ticket.create(req.body);
   
-    const QRCode = await generateQR(`http://localhost:5000/ticket/checkin/${ticket.id}`);
+    //const QRCode = await generateQR(`http://localhost:5000/ticket/checkin/${ticket.id}`);
     
     try {
       await ticket.save();
-      res.status(201).send({ ticket, QRCode });
+      res.status(201).send({ ticket});//, QRCode });
     } catch (e) {
       res.status(400).send(e);
     }

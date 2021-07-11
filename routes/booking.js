@@ -6,7 +6,7 @@ var sequelize = require('../models/db');
 // const { route } = require('./showtime');
 const Ticket = require('../models/ticket');
 const CheckSeat = require('../utils/CheckSeat');
-const generateQR = require('../utils/generateQR');
+//const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
 router.post('/booking/add',asyncHandler (
@@ -81,11 +81,11 @@ router.delete('/booking/:id',asyncHandler (async function(req,res){
 router.post('/booking', async (req, res) => {
     const booking = await Booking.create(req.body);
   
-    const QRCode = await generateQR(`http://localhost:5000/booking/checkin/${booking.id}`);
+    //const QRCode = await generateQR(`http://localhost:5000/booking/checkin/${booking.id}`);
     
     try {
       await booking.save();
-      res.status(201).send({ booking, QRCode });
+      res.status(201).send({ booking });//, QRCode
     } catch (e) {
       res.status(400).send(e);
     }
