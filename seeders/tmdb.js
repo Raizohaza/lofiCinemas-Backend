@@ -1,4 +1,4 @@
-const Movies = require("./models/movie");
+const Movies = require("../models/movie");
 var axios = require("axios").default;
 const apiKey = 'ad35e33e4bfa9e30b26fd40042726c51'
 var options = {

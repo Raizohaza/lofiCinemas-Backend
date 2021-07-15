@@ -20,6 +20,10 @@ router.post('/showtime/add',asyncHandler (async function(req,res){
 }));
 
 //read
+router.get('/showtimes',asyncHandler (async function(req,res){
+    const showtimes = await ShowTime.findAll();
+    res.send(showtimes);
+}));
 router.get('/showtime/:id/Movie',asyncHandler (async function(req,res){
     const MovieId = req.params.id;
     const showtimes = await ShowTime.findAll({include:[ {model: Cinema},{model: Movie} ],where:{MovieId}});
