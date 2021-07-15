@@ -2,7 +2,7 @@
 const Cinema = require('../models/cinema');
 const Cineplex = require('../models/cineplex');
 async function CreateCinema(){
-  var cineplex =await Cineplex.findAll({raw:true,attributes:['id']});
+  var cineplex = await Cineplex.findAll({raw:true,attributes:['id']});
   var newData = [];
   let listCinema = ["3D","4D","2D","HD","SD"]
   let min = 8;
