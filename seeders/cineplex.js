@@ -22,4 +22,4 @@ function CreateCineplex()
   //console.log(newData);
   Cineplex.bulkCreate(newData);
 }
-CreateCineplex();
+module.exports = CreateCineplex;

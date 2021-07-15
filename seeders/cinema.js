@@ -25,4 +25,4 @@ async function CreateCinema(){
  };
  Cinema.bulkCreate(newData);
 }
-CreateCinema();
+module.exports = CreateCinema;

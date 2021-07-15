@@ -25,4 +25,4 @@ async function CreateShowtime(){
     }
     Showtime.bulkCreate(newData);
 };
-CreateShowtime();
+module.exports = CreateShowtime;
