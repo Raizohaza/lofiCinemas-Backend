@@ -5,7 +5,7 @@ const Booking = require('../models/booking');
 var sequelize = require('../models/db');
 // const { route } = require('./showtime');
 const Ticket = require('../models/ticket');
-const CheckSeat = require('../utils/CheckSeat');
+const {CheckSeat} = require('../utils/CheckSeat');
 //const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
@@ -31,7 +31,7 @@ async function(req,res){
                 if(AvailableSeat.includes(Seat)){
                     let Price = req.body.Price[element];
                     let ticketData = {Seat: Seat , Price : Price, BookingId : BookingId, ShowTimeId:ShowTimeId };        
-                    const ticket = await Ticket.create(ticketData,{ transaction: t }).catch(err => {UnAvailableSeatTemp.push(Seat); console.log(err)});
+                    const ticket = await Ticket.create(ticketData,{ transaction: t }).catch(err => {UnAvailableSeatTemp.push(err); console.log(err)});
                     TotalPrice += ticket.Price;
                 }
             };   
@@ -44,7 +44,7 @@ async function(req,res){
         });
     } catch (error) {
         //await t.rollback();
-        res.send({UnAvailableSeat: UnAvailableSeatTemp});
+        res.send({UnAvailableSeat: UnAvailableSeatTemp}+error);
     } 
     
 }));

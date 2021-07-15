@@ -34,5 +34,23 @@ async function CheckSeat(Seats,ShowTimeId){
     console.log( {AvailableSeat: AvailableSeat,UnAvailableSeat: UnAvailableSeat});
     return {AvailableSeat: AvailableSeat,UnAvailableSeat: UnAvailableSeat};
 }
+async function AvailableSeat(ShowTimeId){
+    const showTime = await ShowTime.findByPk(ShowTimeId);
+    let CinemaId = showTime.CinemaId;
+    const cinema = await Cinema.findByPk(CinemaId);
+    let Height = cinema.Height;
+    let Width = cinema.Width;
+    let CinemaSeat = [];
+    let AvailableSeat = [];
+    let UnAvailableSeat = [];
+    for (let index = 0; index < Height; index++) {
+        let SeatChar = String.fromCharCode(65+index);
+        for (let j = 0; j < Width; j++) {
+            const element = SeatChar + (j + 1);
+            CinemaSeat.push(element);      
+        }
+    }
 
-module.exports = CheckSeat;
+    return CinemaSeat;
+}
+module.exports ={ CheckSeat,AvailableSeat};
