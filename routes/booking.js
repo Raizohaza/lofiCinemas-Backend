@@ -3,9 +3,8 @@ const express = require('express');
 const router = express.Router();
 const Booking = require('../models/booking');
 var sequelize = require('../models/db');
-// const { route } = require('./showtime');
 const Ticket = require('../models/ticket');
-const {CheckSeat,AvailableSeat} = require('../utils/CheckSeat');
+const {CheckSeat, GetShowTimeSeat} = require('../utils/CheckSeat');
 //const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
@@ -18,41 +17,45 @@ router.post('/booking/add',asyncHandler (
 async function(req,res){
     let UnAvailableSeatTemp = [];
     try {
-        const result = await sequelize.transaction(async (t) => {
-            const booking = await Booking.create(req.body,{ transaction: t });
-            //console.log(booking);
-            let TotalPrice = 0;
-            let BookingId = booking.id;
-            let ShowTimeId = booking.ShowTimeId;
-            let {AvailableSeat,UnAvailableSeat} = await CheckSeat(req.body.Seats,ShowTimeId);
+            let {AvailableSeat,UnAvailableSeat} = await CheckSeat(req.body.Seats,req.body.ShowTimeId);
+
             UnAvailableSeatTemp = UnAvailableSeat;
-            for(var element in req.body.Seats) {
-                let Seat = req.body.Seats[element];
-                if(AvailableSeat.includes(Seat)){
-                    let Price = req.body.Price[element];
-                    let ticketData = {Seat: Seat , Price : Price, BookingId : BookingId, ShowTimeId:ShowTimeId };        
-                    const ticket = await Ticket.create(ticketData,{ transaction: t }).catch(err => {UnAvailableSeatTemp.push(err); console.log(err)});
-                    TotalPrice += ticket.Price;
-                }
-            };   
-            let dt = new Date();
-            await dt.setHours(dt.getHours()+7);
-            booking.DateTime = dt;
-            booking.TotalPrice = TotalPrice.toFixed(2);   
-            booking.save();
-            res.send({booking, UnAvailableSeat});
-        });
+            if(UnAvailableSeat.length === 0){
+              await sequelize.transaction(async (t) => {
+                const booking = await Booking.create(req.body,{ transaction: t });
+                let TotalPrice = 0;
+                let BookingId = booking.id;
+                let ShowTimeId = booking.ShowTimeId;
+
+                for(var element in req.body.Seats) {
+                  let Seat = req.body.Seats[element];
+                  if(AvailableSeat.includes(Seat)){
+                      let Price = req.body.Price[element];
+                      let ticketData = {Seat: Seat , Price : Price, BookingId : BookingId, ShowTimeId:ShowTimeId };        
+                      await Ticket.create(ticketData,{ transaction: t }).then((response)=>
+                      {
+                        TotalPrice += response.Price;
+                      }).catch(err => {UnAvailableSeatTemp.push(Seat);});
+                  }
+                };   
+                let dt = new Date();
+                await dt.setHours(dt.getHours()+7);
+                booking.DateTime = dt;
+                booking.TotalPrice = TotalPrice.toFixed(2);   
+                booking.save();
+                res.send({booking});//{booking, UnAvailableSeat}
+              });
+            }
+            else{
+              //res.send({UnAvailableSeat});
+              throw new Error();
+            }
     } catch (error) {
-        //await t.rollback();
-        res.send({UnAvailableSeat: UnAvailableSeatTemp}+error);
+        res.send({UnAvailableSeat: UnAvailableSeatTemp,error:error});
     } 
     
 }));
 //read
-// router.post('/booking',asyncHandler (async function(req,res){
-//     const booking = await Booking.findAll();
-//     res.send(booking);
-// }));
 router.get('/booking/:id',asyncHandler (async function(req,res){
     const id = req.params.id;
     const booking = await Booking.findByPk(id);
@@ -111,11 +114,5 @@ router.get('/booking/checkin/:id', async (req, res) => {
       res.status(400).send(e);
     }
   });
-//Cinema Seat
-router.post('/booking/:id/cinemaseat',asyncHandler (async function(req,res){
-    const id = req.params.id;
-    const cinemaseat = await AvailableSeat(id);
-    res.send(cinemaseat);
-}));
 
- module.exports = router;
+module.exports = router;
