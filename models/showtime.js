@@ -43,10 +43,15 @@ const ShowTime = db.define('ShowTime', {
 }
 );
 ShowTime.belongsTo(Movie,{
-  foreignKey: 'MovieId'}
+  foreignKey: 'MovieId',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'
+}
 );
 ShowTime.belongsTo(Cinema,{
-  foreignKey: 'CinemaId'
+  foreignKey: 'CinemaId',
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE '
   });
 module.exports = ShowTime;
 

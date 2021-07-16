@@ -50,7 +50,7 @@ async function connectApi(options,callback){
       params: {api_key: apiKey}
     };
     let videosRes = await getData(videosOptions);    
-    responseSub.videosLink = 'https://www.youtube.com/watch?v=' + videosRes.results[0].key;
+    responseSub.videosLink = 'https://www.youtube.com/embed/' + videosRes.results[0].key;
     
     callback(responseSub);
   });

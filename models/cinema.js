@@ -19,7 +19,10 @@ const Cinema = db.define('Cinema', {
 
 });
 
-Cinema.belongsTo(Cineplex);
-Cineplex.hasMany(Cinema);
+Cinema.belongsTo(Cineplex,{onUpdate: 'CASCADE',onDelete: 'CASCADE',});
+Cineplex.hasMany(Cinema,{
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE'});
+
 
 module.exports = Cinema;

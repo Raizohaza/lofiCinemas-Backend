@@ -18,7 +18,12 @@ const Booking = db.define('Booking', {
     },
   });
 
-User.hasMany(Booking);
-ShowTime.hasMany(Booking);
+User.hasMany(Booking,{
+    onUpdate: 'CASCADE '
+});
+ShowTime.hasMany(Booking,{
+    onDelete: 'CASCADE ',
+    onUpdate: 'CASCADE '
+});
 
 module.exports = Booking;
