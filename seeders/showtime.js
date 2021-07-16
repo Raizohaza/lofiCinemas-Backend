@@ -11,7 +11,7 @@ async function CreateShowtime(){
     for (let i = 0; i < 10; i++) {
       let date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
       let randomMovie = Math.floor(Math.random() * movie.length);
-      let randomCinema = Math.floor(Math.random() *cinema.length);
+      let randomCinema = Math.floor(Math.random() * cinema.length);
       const seedData = {         
         TimeBegin: date,
         DateShow: date,

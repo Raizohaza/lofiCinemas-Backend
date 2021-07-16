@@ -20,23 +20,7 @@ async function GetShowTimeSeat(ShowTimeId){
     }
     return CinemaSeat;
 }
-async function GetCinemaSeat(CinemaId){
-    const cinema = await Cinema.findByPk(CinemaId);
-    const ticket = await Ticket.findAll({where:{ShowTimeId:ShowTimeId},raw:true,attributes:['Seat']});
-    let bookedSeat = ticket.map(tic => tic.Seat);
-    let Height = cinema.Height;
-    let Width = cinema.Width;
-    let CinemaSeat = [];
-    for (let index = 0; index < Height; index++) {
-        let SeatChar = String.fromCharCode(65+index);
-        for (let j = 0; j < Width; j++) {
-            const element = SeatChar + (j + 1);
-            if( ! bookedSeat.includes(element))
-                CinemaSeat.push(element);      
-        }
-    }
-    return CinemaSeat;
-}
+
 /**
  * 
  * @param {Array} Seats Seat List
@@ -45,7 +29,7 @@ async function GetCinemaSeat(CinemaId){
  */
 async function CheckSeat(Seats,ShowTimeId){
 
-    let CinemaSeat = await GetCinemaSeat(ShowTimeId);
+    let CinemaSeat = await GetShowTimeSeat(ShowTimeId);
     let AvailableSeat = [];
     let UnAvailableSeat = [];
 
@@ -62,5 +46,5 @@ async function CheckSeat(Seats,ShowTimeId){
     return {AvailableSeat: AvailableSeat,UnAvailableSeat: UnAvailableSeat};
 }
 
-CheckSeat(['H1','A1','A2','A3'],5);
-module.exports ={ CheckSeat,GetCinemaSeat,GetShowTimeSeat};
+//CheckSeat(['H1','A1','A2','A3'],5);
+module.exports ={ CheckSeat,GetShowTimeSeat};

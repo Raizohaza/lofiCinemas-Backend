@@ -42,6 +42,6 @@ async function CreateBooking(){
       axios.post('http://localhost:5000/booking/add',seedData).then(res => console.log(res.data));//||'https://lofi-cinemas.herokuapp.com/booking/add'
     }
 };
-// module.exports = CreateBooking;
+module.exports = CreateBooking;
 //randomSeat(3,1);
-CreateBooking();
+//CreateBooking();
