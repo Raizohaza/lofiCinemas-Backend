@@ -5,7 +5,7 @@ const Booking = require('../models/booking');
 var sequelize = require('../models/db');
 // const { route } = require('./showtime');
 const Ticket = require('../models/ticket');
-const {CheckSeat} = require('../utils/CheckSeat');
+const {CheckSeat,AvailableSeat} = require('../utils/CheckSeat');
 //const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
@@ -111,5 +111,11 @@ router.get('/booking/checkin/:id', async (req, res) => {
       res.status(400).send(e);
     }
   });
+//Cinema Seat
+router.post('/booking/:id/cinemaseat',asyncHandler (async function(req,res){
+    const id = req.params.id;
+    const cinemaseat = await AvailableSeat(id);
+    res.send(cinemaseat);
+}));
 
  module.exports = router;
