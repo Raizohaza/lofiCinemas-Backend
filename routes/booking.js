@@ -5,6 +5,7 @@ const Booking = require('../models/booking');
 var sequelize = require('../models/db');
 const Ticket = require('../models/ticket');
 const {CheckSeat, GetShowTimeSeat} = require('../utils/CheckSeat');
+const ShowTime = require('../models/showtime');
 //const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
@@ -101,6 +102,22 @@ router.get('/booking', async (req, res) => {
     } catch (e) {
       res.status(400).send(e);
     }
+  });
+
+  router.get('/booking/movieId/:id', async (req, res) => {
+      const id = req.params.id;
+      const showTimes = await ShowTime.findAll({include: { model: Booking },where:{MovieId:id}});
+      let numOr0 = n => isNaN(n) ? 0 : n
+      let revenue = showTimes.map(
+        showTime =>{
+          let total = showTime.Bookings.reduce((a, b) => 
+              numOr0(a.TotalPrice) + numOr0(b.TotalPrice))
+          return{total,showTimeId:showTime.id}
+        } 
+          
+      );
+
+      res.send(showTimes);
   });
 
 router.get('/booking/checkin/:id', async (req, res) => {
