@@ -39,7 +39,7 @@ async function CreateBooking(){
         Price: Price
       };
       console.log(seedData);
-      axios.post('http://localhost:5000/booking/add',seedData).then(res => console.log(res.data));//||'https://lofi-cinemas.herokuapp.com/booking/add'
+      axios.post('https://lofi-cinemas.herokuapp.com/booking/add',seedData).then(res => console.log(res.data));//||'https://lofi-cinemas.herokuapp.com/booking/add'
     }
 };
 module.exports = {CreateBooking};
