@@ -1,7 +1,7 @@
 const CreateCinema = require("./cinema");
 const CreateCineplex = require("./cineplex");
 const CreateShowtime = require("./showtime");
-const CreateBooking = require('./booking');
+const {CreateBooking} = require('./booking');
 function seeders(){
     setTimeout(() => {
         CreateCineplex();

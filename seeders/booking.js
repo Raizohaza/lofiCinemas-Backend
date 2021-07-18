@@ -20,10 +20,10 @@ async function randomSeat(n,ShowtimeId){
 async function CreateBooking(){
     var showtime =await Showtime.findAll({raw:true,attributes:['id']});
     var user =await User.findAll({raw:true,attributes:['id']});
-    let start = new Date(2021, 0, 1);
-    let end = new Date();
+    let start = new Date(2021, 6, 10);
+    let end = new Date(2021, 6, 20);
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 500; i++) {
       let date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
       let randomShowtime = Math.floor(Math.random() * showtime.length);
       let randomUser = Math.floor(Math.random() * user.length);
@@ -42,6 +42,4 @@ async function CreateBooking(){
       axios.post('http://localhost:5000/booking/add',seedData).then(res => console.log(res.data));//||'https://lofi-cinemas.herokuapp.com/booking/add'
     }
 };
-module.exports = CreateBooking;
-//randomSeat(3,1);
-//CreateBooking();
+module.exports = {CreateBooking};

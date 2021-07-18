@@ -25,5 +25,9 @@ ShowTime.hasMany(Booking,{
     onDelete: 'CASCADE ',
     onUpdate: 'CASCADE '
 });
-
+Booking.belongsTo(ShowTime,{
+    foreignKey: 'ShowTimeId',
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE '
+    });
 module.exports = Booking;

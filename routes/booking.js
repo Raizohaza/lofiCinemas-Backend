@@ -6,6 +6,7 @@ var sequelize = require('../models/db');
 const Ticket = require('../models/ticket');
 const {CheckSeat, GetShowTimeSeat} = require('../utils/CheckSeat');
 const ShowTime = require('../models/showtime');
+const Cinema = require('../models/cinema');
 //const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
@@ -39,9 +40,6 @@ async function(req,res){
                       }).catch(err => {UnAvailableSeatTemp.push(Seat);});
                   }
                 };   
-                let dt = new Date();
-                await dt.setHours(dt.getHours()+7);
-                booking.DateTime = dt;
                 booking.TotalPrice = TotalPrice.toFixed(2);   
                 booking.save();
                 res.send({booking});//{booking, UnAvailableSeat}
@@ -104,20 +102,31 @@ router.get('/booking', async (req, res) => {
     }
   });
 
-  router.get('/booking/movieId/:id', async (req, res) => {
-      const id = req.params.id;
-      const showTimes = await ShowTime.findAll({include: { model: Booking },where:{MovieId:id}});
-      let numOr0 = n => isNaN(n) ? 0 : n
-      let revenue = showTimes.map(
-        showTime =>{
-          let total = showTime.Bookings.reduce((a, b) => 
-              numOr0(a.TotalPrice) + numOr0(b.TotalPrice))
-          return{total,showTimeId:showTime.id}
-        } 
-          
-      );
 
-      res.send(showTimes);
+  router.get('/bookingRevenueMovie', async (req, res) => {
+    const bookings = await Booking.findAll({include: { model: ShowTime ,attributes:['MovieId']},attributes:['DateTime','TotalPrice']});
+    res.send(bookings);
+  });
+
+  router.get('/bookingRevenueCineplex', async (req, res) => {
+    const bookings = await Booking.findAll({
+      include: {
+        model: ShowTime,attributes:['CinemaId'],
+        include: [
+          { model: Cinema ,attributes:['CineplexId']},
+        ]
+      },attributes:['DateTime','TotalPrice']
+    });
+    let data = bookings.map(booking =>{
+      return{
+        DateTime:booking.DateTime,
+        TotalPrice:booking.TotalPrice,
+        CinemaId:booking.ShowTime.CinemaId,
+        CineplexId:booking.ShowTime.Cinema.CineplexId
+      }
+    }
+      )
+    res.send(data)
   });
 
 router.get('/booking/checkin/:id', async (req, res) => {
