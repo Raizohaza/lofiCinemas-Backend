@@ -7,7 +7,7 @@ async function CreateCinema(){
   let listCinema = ["3D","4D","2D","HD","SD"]
   let min = 8;
   let max = 12;
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 50; i++) {
    let randomW = Math.floor(Math.random() * (max - min + 1)) + min;
    let randomH = Math.floor(Math.random() * (max - min + 1)) + min;
    let randomN = Math.floor(Math.random() * 11);

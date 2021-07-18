@@ -7,6 +7,8 @@ const Ticket = require('../models/ticket');
 const {CheckSeat, GetShowTimeSeat} = require('../utils/CheckSeat');
 const ShowTime = require('../models/showtime');
 const Cinema = require('../models/cinema');
+const Cineplex = require('../models/cineplex');
+const Movie = require('../models/movie');
 //const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
@@ -104,17 +106,34 @@ router.get('/booking', async (req, res) => {
 
 
   router.get('/bookingRevenueMovie', async (req, res) => {
-    const bookings = await Booking.findAll({include: { model: ShowTime ,attributes:['MovieId']},attributes:['DateTime','TotalPrice']});
-    res.send(bookings);
+    const bookings = await Booking.findAll({
+      include: { model: ShowTime ,attributes:['MovieId'],
+      include: 
+      { model: Movie ,attributes:['Name']}
+      },
+      attributes:['DateTime','TotalPrice']}
+    );
+    let data = bookings.map(booking =>{
+      return{
+        DateTime:booking.DateTime,
+        TotalPrice:booking.TotalPrice,
+        CinemaId:booking.ShowTime.CinemaId,
+        MovieId:booking.ShowTime.MovieId,
+        MovieName:booking.ShowTime.Movie.Name
+      }
+    })
+    
+    res.send(data);
   });
 
   router.get('/bookingRevenueCineplex', async (req, res) => {
     const bookings = await Booking.findAll({
       include: {
         model: ShowTime,attributes:['CinemaId'],
-        include: [
-          { model: Cinema ,attributes:['CineplexId']},
-        ]
+        include: 
+          { model: Cinema ,attributes:['CineplexId'],
+          include: { model: Cineplex ,attributes:['Name']},
+          },
       },attributes:['DateTime','TotalPrice']
     });
     let data = bookings.map(booking =>{
@@ -122,7 +141,8 @@ router.get('/booking', async (req, res) => {
         DateTime:booking.DateTime,
         TotalPrice:booking.TotalPrice,
         CinemaId:booking.ShowTime.CinemaId,
-        CineplexId:booking.ShowTime.Cinema.CineplexId
+        CineplexId:booking.ShowTime.Cinema.CineplexId,
+        CineplexName:booking.ShowTime.Cinema.Cineplex.Name
       }
     }
       )
