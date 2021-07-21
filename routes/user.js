@@ -150,11 +150,28 @@ router.post('/:id/details',asyncHandler(async function(req, res) {
 }));
 
 //login facebook
-router.get('/auth/loginFacebook', (req,res) =>{
-    res.title - "login fb";
-    res.render('loginfb');
-});
-
+router.post('/auth/loginFacebook',(async function (req,res){
+    const {Email,Name,Role,facebookId} = req.body;
+    const findUser = await User.findbyEmail(Email);
+    if(findUser)
+        res.send('Email da dc su dung');
+    else 
+    {
+    const user = await User.create(req.body);
+    res.send(user);
+    }
+}));
+router.post('/auth/loginGoogle',(async function (req,res){
+    const {Email,Name,Role,googleId} = req.body;
+    const findUser = await User.findbyEmail(Email);
+    if(findUser)
+        res.send('Email da dc su dung');
+    else 
+    {
+    const user = await User.create(req.body);
+    res.send(user);
+    }
+}));
 router.get('/auth/facebook', passport.authenticate('facebook',{scope: 'email' }));
 
 router.get('/auth/facebook/callback',
