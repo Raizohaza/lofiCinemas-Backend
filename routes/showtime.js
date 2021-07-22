@@ -5,7 +5,7 @@ const Movie = require('../models/movie');
 const Cinema = require('../models/cinema');
 const ShowTime = require('../models/showtime');
 const Cineplex = require('../models/cineplex');
-const {GetShowTimeSeat} = require('../utils/CheckSeat');
+const {GetShowTimeSeat, GetBookedSeat} = require('../utils/CheckSeat');
 // const ensureadmin = require('../middlewares/ensure_admin');
 // router.use(ensureadmin);
 router.use(function(req,res,next){
@@ -86,7 +86,7 @@ router.delete('/showtime/:id',asyncHandler (async function(req,res){
 //Cinema Seat
 router.get('/showtime/:id/seat',asyncHandler (async function(req,res){
     const id = req.params.id;
-    const seats = await GetShowTimeSeat(id);
+    const seats = await GetBookedSeat(id);
     res.send(seats);
   }));
 
