@@ -46,11 +46,27 @@ router.get('/showtime/:id/Movie',asyncHandler (async function(req,res){
     })
     res.send(data);
     }));
-router.get('/showtime/:id/Cinema',asyncHandler (async function(req,res){
-    const CinemaId = req.params.id;
-    const showtimes = await ShowTime.findAll({include:[ {model: Cinema},{model: Movie} ],where:{CinemaId}});
-        res.send(showtimes);
-    }));
+    router.get('/showtime/:id/Cinema',asyncHandler (async function(req,res){
+        const CinemaId = req.params.id;
+        const showtimes = await ShowTime.findAll({include:[ {model: Cinema,include:{model:Cineplex}},{model: Movie} ],where:{CinemaId}});
+        let data = showtimes.map(showtime=>{
+            return {
+                id:showtime.id,
+                TimeBegin: showtime.TimeBegin,
+                DateShow: showtime.DateShow,
+                Price: showtime.Price,
+                MovieID: showtime.MovieId,
+                CinemaId: showtime.CinemaId,
+                CinemaName: showtime.Cinema.Name,
+                Height: showtime.Cinema.Height,
+                Width: showtime.Cinema.Width,
+                CinemaType: showtime.Cinema.Type,
+                CineplexId: showtime.Cinema.CineplexId,
+                CineplexName: showtime.Cinema.Cineplex.Name,
+            }
+        })
+        res.send(data);
+        }));
 router.get('/showtime/:id/Cineplex',asyncHandler (async function(req,res){
     const CineplexId = req.params.id;
     const cinemas = await Cinema.findAll({where:{CineplexId}});
