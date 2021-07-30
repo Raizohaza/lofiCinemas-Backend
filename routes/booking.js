@@ -125,7 +125,27 @@ router.get('/booking', async (req, res) => {
     
     res.send(data);
   });
-
+  router.get('/bookingMovie', async (req, res) => {
+    const bookings = await Booking.findAll({
+      include: { model: ShowTime ,attributes:['MovieId','TimeBegin'],
+      include: 
+      { model: Movie ,attributes:['Name']}
+      },
+      attributes:['DateTime','TotalPrice']}
+    );
+    let data = bookings.map(booking =>{
+      return{
+        DateTime:booking.DateTime,
+        TotalPrice:booking.TotalPrice,
+        TimeBegin:booking.ShowTime.TimeBegin,
+        CinemaId:booking.ShowTime.CinemaId,
+        MovieId:booking.ShowTime.MovieId,
+        MovieName:booking.ShowTime.Movie.Name
+      }
+    })
+    
+    res.send(data);
+  });
   router.get('/bookingRevenueCineplex', async (req, res) => {
     const bookings = await Booking.findAll({
       include: {
