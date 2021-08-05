@@ -18,7 +18,7 @@ function CreateMovie_tmdb(data)
   rObj.Duration = data.runtime;
   rObj.MID = data.id;
   rObj.Trailer = data.videosLink;
-  rObj.Status = data.status == "Released" ? "Now playing" : "Comming soon";
+  rObj.Status = data.status == "Released" ? "Now playing" : "Coming soon";
 
   //update / insert 
   Movies.upsert(rObj);

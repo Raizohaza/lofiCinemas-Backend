@@ -56,6 +56,7 @@ router.get('/showtime/:id/Movie',asyncHandler (async function(req,res){
                 DateShow: showtime.DateShow,
                 Price: showtime.Price,
                 MovieID: showtime.MovieId,
+                MovieName: showtime.Movie.Name,
                 CinemaId: showtime.CinemaId,
                 CinemaName: showtime.Cinema.Name,
                 Height: showtime.Cinema.Height,

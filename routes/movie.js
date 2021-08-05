@@ -23,7 +23,7 @@ router.get('/hot',asyncHandler (async function(req,res){
                 }));
 
 router.get('/comingsoon',asyncHandler (async function(req,res){
-    const comingsoons = await Movie.findAll({where:{ Status: 'Post Production'}});
+    const comingsoons = await Movie.findAll({where:{ Status: 'Coming soon'}});
  
             //const cinemas = await Cinema.findAll();
             res.send({Movie:comingsoons});
