@@ -13,6 +13,7 @@ const db = require('./models/db');
 const cors = require('cors');
 const User = require('./models/user');
 // const config = require('./config/config');
+require('dotenv').config({path: __dirname + '/.env'})
 var app = express();
 
 app.use(cors());

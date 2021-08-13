@@ -58,13 +58,11 @@ router.post('/register',asyncHandler (async function(req,res){
             req.body.Code = Code;
             const found = await User.create(req.body);
             if(found){
-                let host = req.hostname;
-                if(host == 'localhost')
-                    host = 'http://localhost:5000';
-                let verifyLink = `${host}/user/verify?id=${found.id}&code=${found.Code}`;
+                let host = process.env['APP_URL'] || 'https://loficinema.herokuapp.com'
+                let verifyLink = `${host}/verify?id=${found.id}&code=${found.Code}`;
 
                 EmailCtrl.send(found.Email,'Register',verifyLink);
-                res.send(`Check your email to verify your account ` + verifyLink);
+                res.send(verifyLink);
 
             }else{
                 res.send('Check your email to verify');
@@ -100,11 +98,11 @@ router.get('/verify',async(req,res,next) =>{
             { where: { id: id } }
         );
         verifyUser.save().then(()=>{
-            res.send({User:verifyUser});
+            res.send({user:verifyUser});
         });
     }
     else{
-        res.send('Wrong code');
+        res.status(404).send('Wrong code');
     }
 });
 
