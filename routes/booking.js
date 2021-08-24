@@ -63,6 +63,12 @@ router.get('/booking/:id',asyncHandler (async function(req,res){
     res.send(booking);
     }));
 
+router.get('/booking/:id/history',asyncHandler (async function(req,res){
+    const id = req.params.id;
+    const booking = await Booking.findAll({where:{UserId:id}});
+    res.send(booking);
+}));
+
 //update
 router.put('/booking/:id',asyncHandler (async function(req,res){
     const id = req.params.id;

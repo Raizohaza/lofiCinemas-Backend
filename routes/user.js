@@ -22,12 +22,15 @@ router.post('/login',asyncHandler (async function(req,res){
         }
         else if(found  && brcypt.compareSync(Password,found.Password)){
             req.session.UserId = found.id;
-
-            if(found.Role == 'admin'){
-                res.send({user:found })
-            }else{
-                res.send({user:found })
+            let user={
+                Email:  found.Email,
+                Name:   found.Name,
+                Role:   found.Role,
+                Tel:    found.Tel,
+                id:     found.id
             }
+            res.send({user:user })
+
         }
         else{
             res.send('Wrong password');
