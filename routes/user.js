@@ -36,7 +36,7 @@ router.post('/login',asyncHandler (async function(req,res){
             res.send('Wrong password');
         }
     } catch (error) {
-        res.sendStatus(406);
+        res.send(error);
     }
 
     }
@@ -82,6 +82,7 @@ router.post('/reset',asyncHandler(async function(req, res) {
     if(user){        
             const hash = brcypt.hashSync(code,10);
             user.Password = hash;
+            user.Code = code;
             await user.save();
             const context ="Your password was changed : "+ code;
             EmailCtrl.send(Email,' reset your account ',context);        

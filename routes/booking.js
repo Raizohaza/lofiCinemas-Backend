@@ -65,8 +65,28 @@ router.get('/booking/:id',asyncHandler (async function(req,res){
 
 router.get('/booking/:id/history',asyncHandler (async function(req,res){
     const id = req.params.id;
-    const booking = await Booking.findAll({where:{UserId:id}});
-    res.send(booking);
+    let bookings = await Booking.findAll({where:{UserId:id}});
+    let data = [];
+    bookings.map(async booking => {
+      let ShowTimeId = booking.ShowTimeId;
+      let tickets = await Ticket.findAll({attributes:['BookingId','Seat'],where:{BookingId:booking.id},raw:true});
+      tickets = await tickets.map(ticket => ticket.Seat);
+      const showtimes = await ShowTime.findOne(
+        { 
+          include:[ {model: Cinema,
+            attributes:['Name','Type'],
+            include:{model:Cineplex,attributes:['Name','Address']}},
+            {model: Movie,attributes:['Name','Poster','Duration']} ],
+            where:{id:ShowTimeId},
+            attributes:['TimeBegin','DateShow','Price']
+        }
+      );
+      data.push({booking,tickets,showtimes});
+    });
+    setTimeout(() => {
+      console.log(JSON.stringify(data));
+      res.send(data);
+    }, 2000);
 }));
 
 //update
