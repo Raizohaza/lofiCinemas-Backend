@@ -16,11 +16,11 @@ router.post('/login',asyncHandler (async function(req,res){
     try {
         const {Email,Password} = req.body;
         const found = await User.findbyEmail(Email);
-
-        if(found.Verify !== true){
+        
+        if(found && found.Verify !== true && brcypt.compareSync(Password,found.Password)){
             res.send(`Check your email to verify your account`);
         }
-        else if(found  && brcypt.compareSync(Password,found.Password)){
+        if(found  && brcypt.compareSync(Password,found.Password)){
             req.session.UserId = found.id;
             let user={
                 Email:  found.Email,
@@ -32,8 +32,11 @@ router.post('/login',asyncHandler (async function(req,res){
             res.send({user:user })
 
         }
-        else{
+        else if(found  && !brcypt.compareSync(Password,found.Password)){
             res.send('Wrong password');
+        }
+        else{
+            res.send('Not found please register!');
         }
     } catch (error) {
         res.send(error);
@@ -51,7 +54,7 @@ router.post('/register',asyncHandler (async function(req,res){
          if(Password != ConfirmPassword){
           res.send('Those passwords didn’t match. Try again');
          }else if(findUser){
-             res.send('Email da dc su dung');
+             res.send('Email was registered');
          }
          
          else if(!findUser){           
