@@ -23,7 +23,7 @@ async function CreateBooking(){
     var user =await User.findAll({raw:true,attributes:['id']});
     let start = new Date(new Date().setDate(new Date().getDate() - 7));
     let end = new Date(new Date().setDate(new Date().getDate() + 7));
-    let host = 'https://lofi-cinemas.herokuapp.com/';
+    let host = 'https://lofi-cinemas.herokuapp.com';
 
     for (let i = 0; i < 50; i++) {
       let date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
