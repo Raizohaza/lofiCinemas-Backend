@@ -6,8 +6,9 @@ async function CreateShowtime(){
     var newData = [];
     var movie =await Movie.findAll({raw:true,attributes:['id']});
     var cinema =await Cinema.findAll({raw:true,attributes:['id']});
-    let start = new Date().setDate(new Date().getDate() - 7);
-    let end = new Date().setDate(new Date().getDate() + 7);
+    let start = new Date(new Date().setDate(new Date().getDate() - 7));
+    let end = new Date(new Date().setDate(new Date().getDate() + 7));
+
     for (let i = 0; i < 500; i++) {
       let date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
       let randomMovie = Math.floor(Math.random() * movie.length);

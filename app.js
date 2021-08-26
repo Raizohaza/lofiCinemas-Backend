@@ -14,7 +14,7 @@ const cors = require('cors');
 const User = require('./models/user');
 // const config = require('./config/config');
 const environment = process.env.NODE_ENV || 'development';
-console.log(environment);
+
 if(environment ==='development')
   require('dotenv').config({path: __dirname + '/.env'});
 var app = express();

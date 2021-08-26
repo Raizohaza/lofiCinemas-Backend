@@ -61,7 +61,7 @@ router.post('/register',asyncHandler (async function(req,res){
             req.body.Code = Code;
             const found = await User.create(req.body);
             if(found){
-                let host = process.env['APP_URL'] || 'https://loficinema.herokuapp.com'
+                let host = process.env['APP_URL'] || 'https://loficinema.herokuapp.com';
                 let verifyLink = `${host}/verify?id=${found.id}&code=${found.Code}`;
 
                 EmailCtrl.send(found.Email,'Register',verifyLink);

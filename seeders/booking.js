@@ -3,6 +3,9 @@ const User = require('../models/user');
 const Booking = require("../models/booking");
 const {GetShowTimeSeat} = require('../utils/CheckSeat');
 const axios  = require('axios');
+const dirname = __dirname.replace('seeders','');
+require('dotenv').config({path: dirname + '/.env'});
+
 async function randomSeat(n,ShowtimeId){
     let Seats = [];
     let Price = [];
@@ -20,8 +23,9 @@ async function randomSeat(n,ShowtimeId){
 async function CreateBooking(){
     var showtime =await Showtime.findAll({raw:true,attributes:['id']});
     var user =await User.findAll({raw:true,attributes:['id']});
-    let start = new Date().setDate(new Date().getDate() - 7);
-    let end = new Date().setDate(new Date().getDate() + 7);
+    let start = new Date(new Date().setDate(new Date().getDate() - 7));
+    let end = new Date(new Date().setDate(new Date().getDate() + 7));
+    let host = process.env['APP_BACK_URL'] || 'https://loficinema.herokuapp.com';
 
     for (let i = 0; i < 50; i++) {
       let date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
@@ -38,8 +42,7 @@ async function CreateBooking(){
         Seats: Seats,
         Price: Price
       };
-      console.log(seedData);
-      axios.post('http://localhost:5000/booking/add',seedData).then(res => console.log(res.data));//||'https://lofi-cinemas.herokuapp.com/booking/add'
+      axios.post(host+'/booking/add',seedData).then(res => console.log(res.data));//||'https://lofi-cinemas.herokuapp.com/booking/add'
     }
 };
 module.exports = {CreateBooking};
