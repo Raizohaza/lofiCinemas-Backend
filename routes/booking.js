@@ -9,6 +9,8 @@ const ShowTime = require('../models/showtime');
 const Cinema = require('../models/cinema');
 const Cineplex = require('../models/cineplex');
 const Movie = require('../models/movie');
+const EmailCtrl = require('../models/email');
+const User = require('../models/user');
 //const generateQR = require('../utils/generateQR');
 //create
 // data List Seat + List Price + BookingId + DateTime  + Total Price
@@ -20,7 +22,7 @@ router.post('/booking/add',asyncHandler (
  */
 async function(req,res){
     let UnAvailableSeatTemp = [];
-    try {
+    // try {
             let {AvailableSeat,UnAvailableSeat} = await CheckSeat(req.body.Seats,req.body.ShowTimeId);
 
             UnAvailableSeatTemp = UnAvailableSeat;
@@ -44,6 +46,13 @@ async function(req,res){
                 };   
                 booking.TotalPrice = TotalPrice.toFixed(2);   
                 booking.save();
+                let dataBookingShowTime = new Date(booking.DateTime);
+                let decs = "This is your bookingId: " + dataBookingShowTime.getTime().toString();
+                console.log(decs);
+                let found = await User.findByPk(booking.UserId);
+                if(found){
+                  EmailCtrl.send(found.Email,'Booking',decs);
+                }
                 res.send({booking});//{booking, UnAvailableSeat}
               });
             }
@@ -51,9 +60,9 @@ async function(req,res){
               //res.send({UnAvailableSeat});
               throw new Error();
             }
-    } catch (error) {
-        res.send({UnAvailableSeat: UnAvailableSeatTemp,error:error});
-    } 
+    // } catch (error) {
+    //     res.send({UnAvailableSeat: UnAvailableSeatTemp,error:error});
+    // } 
     
 }));
 //read
